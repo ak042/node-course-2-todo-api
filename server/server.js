@@ -7,6 +7,7 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
+const port = process.env.PORT || 3000;
 
 
 app.use(bodyParser.json());
@@ -34,25 +35,25 @@ app.get('/todos', (req, res) => {
  // GET /todos/1234321
  app.get('/todos/:id', (req, res) => {
      var id = req.params.id;
-     console.log(`ID: ${id}`);
+    //  console.log(`ID: ${id}`);
      if (!ObjectID.isValid(id))
      {
          return res.status(404).send(); //console.log('Id is not valid');
      }
      //res.send(req.param);
-    Todo.findById(id).then((todos)=> {
-        if (!todos){
+    Todo.findById(id).then((todo)=> {
+        if (!todo){
             return res.status(404).send();
         }
-        res.send({todos});
+        res.send({todo});
 
     }, (e) => {
         res.status(400).send(e);
     });
  });
 
-app.listen(3000, () => {
-    console.log('Started on ort 3000');
+app.listen(port, () => {
+    console.log(`Started up at port $(port}`);
 });
 
 module.exports = {app};
